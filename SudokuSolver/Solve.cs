@@ -4,42 +4,28 @@ using System.Text;
 
 namespace SudokuSolver
 {
+    /// <summary>
+    /// This Class is the Engine of the application
+    /// It takes Sudoku (9x9) input and save the result in _board variable.
+    /// </summary>
     class Solve
     {
         
         private readonly List<StringBuilder> _board;
-        
+
+        public List<StringBuilder> Board
+        {
+            get { return _board; }
+        }
+
         // Defining parametric constructor to assign unsolved sudoku to _board variable
         public Solve(List<StringBuilder> input)
         {
             _board = input;
         }
-        // Display Function is doing two things, display the unsolved Sudoku in a fashion way
-        // And display the solved Sudoku also in a fashion way.
-        public void Display(bool result = false)
-        {
-            if(result)Solver(_board);
-            for(int i =0;i<9;i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    Console.Write(_board[i][j] + " ");
-                    if (j == 2 || j == 5)
-                    {
-                        Console.Write("|");
-                    }
-                }
-                if(i==2 || i==5) { Console.WriteLine("\n------+------+-----");}
-                else
-                {
-                    Console.WriteLine();
-                }
 
-            }
-            
-        }
         //Isvalid function is checking the constrains of Sudoku game.
-        private  bool IsValid(List<StringBuilder>board,int row, int col, char num)
+        private  bool IsValid(List<StringBuilder> board,int row, int col, char num)
         {
             // If the new value which to be filled in the empty space is 
             // not present in that row, return true else false.
@@ -79,7 +65,7 @@ namespace SudokuSolver
             return true;
         }
         // main function which implementing the backtracking Algorithm to solve the problem.
-        private  bool Solver(List<StringBuilder> board)
+        public  bool Solver()
         {
             var row = -1;
             var col = -1;
@@ -89,7 +75,7 @@ namespace SudokuSolver
             {
                 for (var j = 0 ; j < 9 ;j++)
                 {
-                    if (board[i][j] == '-')
+                    if (_board[i][j] == '-')
                     {
                         row = i;
                         col = j;
@@ -112,16 +98,16 @@ namespace SudokuSolver
             // we can apply the algorithm recursively to fill the board.
             for(var num = 1; num <=9; num++)
             {
-                if (IsValid(board, row, col, (char) (num + 48)))
+                if (IsValid(_board, row, col, (char) (num + 48)))
                 {
-                    board[row][col] = (char) (num + 48);
-                    if (Solver(board))
+                    _board[row][col] = (char) (num + 48);
+                    if (Solver())
                     {
                         return true;
                     }
                     else
                     {
-                        board[row][col] = '-';
+                        _board[row][col] = '-';
                     }
                 }
             }

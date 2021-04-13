@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Text;
 
@@ -7,24 +8,44 @@ namespace SudokuSolver
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            List<StringBuilder> userInput = new List<StringBuilder>();
-            /*StreamReader sr = new StreamReader(@"c:\users\akshat.jain\documents\visual studio 2015\Projects\SudokuSolver\SudokuSolver\testcase.txt");*/
-            for (var i = 0; i < 9; i++)
+            var userInput = new List<StringBuilder>();
+            //StreamReader sr = null;
+            //var path =
+              //  @"c:\users\akshat.jain\documents\visual studio 2015\Projects\SudokuSolver\SudokuSolver\testcase.txt";
+            try
             {
-                string text = Console.ReadLine(); /*sr.ReadLine()*/
-                StringBuilder input = new StringBuilder(text);
-                userInput.Add(input);
+                //sr = new StreamReader(path);
+
+                for (var i = 0; i < 9; i++)
+                {
+                    //var text = sr.ReadLine();
+                    var text = Console.ReadLine();
+                    if (text != null && text.Length == 9)
+                    {
+                        var input = new StringBuilder(text);
+                        userInput.Add(input);
+                    }
+                    else
+                    {
+                        throw new InvalidExpressionException();
+                    }
+                }
+
+                var solver = new Solve(userInput);
+                Console.WriteLine("Your Given Sudoku Board....\n");
+                Display.DisplaySudoku(userInput);
+                solver.Solver();
+                Console.WriteLine("\nAnswer Generate With Our Algorithm....\n");
+                Display.DisplaySudoku(solver.Board);
             }
-
-            var solver = new Solve(userInput);
-            Console.WriteLine("Your Given Sudoku Board....\n");
-            solver.Display(false);
-            Console.WriteLine("\nAnswer Degenerate With Our Algorithm....\n");
-            solver.Display(true);
+            catch (Exception e)
+            {
+                Console.WriteLine($"{e.Message}");
+            }
+            
             Console.ReadLine();
-
 
         }
     }
